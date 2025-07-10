@@ -1,26 +1,19 @@
-package ms_produto.modelo.entidades;
+package ms_produto.dtos;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Unidade {
+public class UnidadeRetornoDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String codigo;
 
     private String descricao;
-
-    private LocalDateTime dtExclusao;
 }
