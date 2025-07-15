@@ -7,6 +7,9 @@ import ms_produto.modelo.repositorio.UnidadeRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UnidadeServico {
 
@@ -24,5 +27,19 @@ public class UnidadeServico {
         unidadeRetorno.setCodigo(unidade.getCodigo());
         unidadeRetorno.setDescricao(unidade.getDescricao());
         return unidadeRetorno;
+    }
+
+    public List<UnidadeRetornoDTO> retornarListaUnidade(){
+        List<Unidade> listaUnidade = repositorio.findAll();
+        List<UnidadeRetornoDTO> unidadeRetornoDTOS = new ArrayList<>();
+        for(int i=0;i < listaUnidade.size();i++){
+            Unidade unidade = listaUnidade.get(i);
+            UnidadeRetornoDTO unidadeRetornoDTO = new UnidadeRetornoDTO();
+            unidadeRetornoDTO.setId(unidade.getId());
+            unidadeRetornoDTO.setDescricao(unidade.getDescricao());
+            unidadeRetornoDTO.setCodigo(unidade.getCodigo());
+            unidadeRetornoDTOS.add(unidadeRetornoDTO);
+        }
+        return unidadeRetornoDTOS;
     }
 }
