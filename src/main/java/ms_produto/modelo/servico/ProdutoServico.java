@@ -90,4 +90,20 @@ public class ProdutoServico {
         Produto produto = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
         repositorio.delete(produto);
     }
+
+    public ProdutoRetornoDTO buscarProdutoPorId(UUID id){
+        Produto produto = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        ProdutoRetornoDTO produtoRetornoDTO = new ProdutoRetornoDTO();
+        produtoRetornoDTO.setId(produto.getId());
+        produtoRetornoDTO.setCodigo(produto.getCodigo());
+        produtoRetornoDTO.setFoto(produto.getFoto());
+        produtoRetornoDTO.setNomeProduto(produto.getNomeProduto());
+        produtoRetornoDTO.setComplemento(produto.getComplemento());
+        produtoRetornoDTO.setCodigoBarra(produto.getCodigoBarra());
+        produtoRetornoDTO.setValorVenda(produto.getValorVenda());
+        produtoRetornoDTO.setValorCusto(produto.getValorCusto());
+
+        return produtoRetornoDTO;
+    }
 }

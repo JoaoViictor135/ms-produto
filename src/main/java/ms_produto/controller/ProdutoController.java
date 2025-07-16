@@ -26,6 +26,11 @@ public class ProdutoController {
         return servico.retornarListaProduto();
     }
 
+    @GetMapping("/buscar-por-id/id/{id}")
+    public ProdutoRetornoDTO atualizarProdutoPorId(@PathVariable("id") UUID id){
+        return servico.buscarProdutoPorId(id);
+    }
+
     @PutMapping("/id/{id}")
     public ProdutoRetornoDTO atualizarProduto(@PathVariable("id") UUID id, @RequestBody @Valid ProdutoEntradaDTO produtoEntradaDTO){
         return servico.atualizaProduto(id, produtoEntradaDTO);

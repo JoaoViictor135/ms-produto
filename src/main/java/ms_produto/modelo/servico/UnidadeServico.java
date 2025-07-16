@@ -62,4 +62,14 @@ public class UnidadeServico {
         Unidade unidade = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Unidade não encontrada"));
         repositorio.delete(unidade);
     }
+
+    public UnidadeRetornoDTO buscarUnidadePorid(UUID id){
+        Unidade unidade = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Unidade não encontrada"));
+
+        UnidadeRetornoDTO unidadeRetornoDTO = new UnidadeRetornoDTO();
+        unidadeRetornoDTO.setId(unidade.getId());
+        unidadeRetornoDTO.setCodigo(unidade.getCodigo());
+        unidadeRetornoDTO.setDescricao(unidade.getDescricao());
+        return unidadeRetornoDTO;
+    }
 }

@@ -27,6 +27,11 @@ public class GrupoController {
         return servico.retornarListaGrupo();
     }
 
+    @GetMapping("/buscar-por-id/id/{id}")
+    public GrupoRetornoDTO buscargrupoPorId(@PathVariable("id") UUID id){
+        return servico.buscarGrupoPorId(id);
+    }
+
     @PutMapping("/id/{id}")
     public GrupoRetornoDTO atualizarGrupo(@PathVariable("id") UUID id, @RequestBody @Valid GrupoEntradaDTO grupoEntradaDTO){
         return servico.atualizaGrupo(id, grupoEntradaDTO);

@@ -26,6 +26,11 @@ public class UnidadeController {
         return servico.retornarListaUnidade();
     }
 
+    @GetMapping("/buscar-por-id/id/{id}")
+    public UnidadeRetornoDTO bucarUnidadePorId(@PathVariable("id") UUID id){
+        return servico.buscarUnidadePorid(id);
+    }
+
     @PutMapping("/id/{id}")
     public UnidadeRetornoDTO atualizarUnidade(@PathVariable("id") UUID id, @RequestBody @Valid UnidadeEntradaDTO unidadeEntradaDTO){
         return servico.atualizarUnidade(id, unidadeEntradaDTO);

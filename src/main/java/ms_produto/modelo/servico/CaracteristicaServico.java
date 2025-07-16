@@ -62,4 +62,14 @@ public class CaracteristicaServico {
         Caracteristica caracteristica = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
         repositorio.delete(caracteristica);
     }
+
+    public CaracteristicaRetornoDTO buscarCaracteristicaPorId(UUID id){
+        Caracteristica caracteristica = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
+
+        CaracteristicaRetornoDTO caracteristicaRetornoDTO = new CaracteristicaRetornoDTO();
+        caracteristicaRetornoDTO.setId(caracteristica.getId());
+        caracteristicaRetornoDTO.setDescricao(caracteristica.getDescricao());
+        caracteristicaRetornoDTO.setCodigo(caracteristica.getCodigo());
+        return caracteristicaRetornoDTO;
+    }
 }

@@ -27,6 +27,11 @@ public class CaracteristicaController {
         return servico.retornarListaCaracteristica();
     }
 
+    @GetMapping("/buscar-por-id/id/{id}")
+    public CaracteristicaRetornoDTO buscarCaracteristicaPorId(@PathVariable ("id") UUID id){
+        return servico.buscarCaracteristicaPorId(id);
+    }
+
     @PutMapping("/id/{id}")
     public CaracteristicaRetornoDTO atualizarCaracteristica(@PathVariable("id") UUID id, @RequestBody @Valid CaracteristicaEntradaDTO caracteristicaEntradaDTO){
         return servico.atualizarCaracteristica(id, caracteristicaEntradaDTO);
