@@ -57,4 +57,9 @@ public class UnidadeServico {
         unidadeRetornoDTO.setDescricao(unidade.getDescricao());
         return unidadeRetornoDTO;
     }
+
+    public void deletarServico(UUID id){
+        Unidade unidade = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Unidade não encontrada"));
+        repositorio.delete(unidade);
+    }
 }

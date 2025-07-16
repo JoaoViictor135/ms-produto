@@ -85,4 +85,9 @@ public class ProdutoServico {
 
         return produtoRetornoDTO;
     }
+
+    public void deletarProduto(UUID id){
+        Produto produto = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        repositorio.delete(produto);
+    }
 }

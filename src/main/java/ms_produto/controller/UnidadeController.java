@@ -30,4 +30,9 @@ public class UnidadeController {
     public UnidadeRetornoDTO atualizarUnidade(@PathVariable("id") UUID id, @RequestBody @Valid UnidadeEntradaDTO unidadeEntradaDTO){
         return servico.atualizarUnidade(id, unidadeEntradaDTO);
     }
+
+    @DeleteMapping("/deletar/id/{id}")
+    public void deletarUnidade(@PathVariable("id") UUID id){
+        servico.deletarServico(id);
+    }
 }

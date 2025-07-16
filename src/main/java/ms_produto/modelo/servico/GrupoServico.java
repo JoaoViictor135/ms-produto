@@ -58,4 +58,9 @@ public class GrupoServico {
         grupoRetornoDTO.setCodigo(grupo.getCodigo());
         return grupoRetornoDTO;
     }
+
+    public void deletarGrupo(UUID id){
+        Grupo grupo = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
+        repositorio.delete(grupo);
+    }
 }

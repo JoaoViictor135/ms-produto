@@ -30,4 +30,9 @@ public class ProdutoController {
     public ProdutoRetornoDTO atualizarProduto(@PathVariable("id") UUID id, @RequestBody @Valid ProdutoEntradaDTO produtoEntradaDTO){
         return servico.atualizaProduto(id, produtoEntradaDTO);
     }
+
+    @DeleteMapping("/deletar/id/{id}")
+    public void deletarProduto(@PathVariable("id") UUID id){
+        servico.deletarProduto(id);
+    }
 }

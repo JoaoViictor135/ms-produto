@@ -31,4 +31,9 @@ public class CaracteristicaController {
     public CaracteristicaRetornoDTO atualizarCaracteristica(@PathVariable("id") UUID id, @RequestBody @Valid CaracteristicaEntradaDTO caracteristicaEntradaDTO){
         return servico.atualizarCaracteristica(id, caracteristicaEntradaDTO);
     }
+
+    @DeleteMapping("/deletar/id/{id}")
+    public void deletarCaracteristica(@PathVariable("id") UUID id){
+        servico.deletarCaracteristica(id);
+    }
 }

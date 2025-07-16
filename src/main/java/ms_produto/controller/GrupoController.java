@@ -32,4 +32,8 @@ public class GrupoController {
         return servico.atualizaGrupo(id, grupoEntradaDTO);
     }
 
+    @DeleteMapping("/deletar/id/{id}")
+    public void deletarGrupo(@PathVariable("id") UUID id){
+        servico.deletarGrupo(id);
+    }
 }

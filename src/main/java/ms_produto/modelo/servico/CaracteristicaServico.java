@@ -57,4 +57,9 @@ public class CaracteristicaServico {
         caracteristicaRetornoDTO.setCodigo(caracteristica.getCodigo());
         return caracteristicaRetornoDTO;
     }
+
+    public void deletarCaracteristica(UUID id){
+        Caracteristica caracteristica = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
+        repositorio.delete(caracteristica);
+    }
 }
