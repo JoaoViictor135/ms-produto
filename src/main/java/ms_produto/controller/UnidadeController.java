@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/unidade")
@@ -23,5 +24,10 @@ public class UnidadeController {
     @GetMapping
     public List<UnidadeRetornoDTO> retornarLista(){
         return servico.retornarListaUnidade();
+    }
+
+    @PutMapping("/id/{id}")
+    public UnidadeRetornoDTO atualizarUnidade(@PathVariable("id") UUID id, @RequestBody @Valid UnidadeEntradaDTO unidadeEntradaDTO){
+        return servico.atualizarUnidade(id, unidadeEntradaDTO);
     }
 }

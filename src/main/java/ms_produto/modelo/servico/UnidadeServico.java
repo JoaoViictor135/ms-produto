@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UnidadeServico {
@@ -41,5 +42,19 @@ public class UnidadeServico {
             unidadeRetornoDTOS.add(unidadeRetornoDTO);
         }
         return unidadeRetornoDTOS;
+    }
+
+    public UnidadeRetornoDTO atualizarUnidade(UUID id, UnidadeEntradaDTO unidadeEntradaDTO){
+        Unidade unidade = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Unidade não encontrada"));
+        unidade.setDescricao(unidadeEntradaDTO.getDescricao());
+        unidade.setCodigo(unidadeEntradaDTO.getCodigo());
+
+        repositorio.save(unidade);
+
+        UnidadeRetornoDTO unidadeRetornoDTO = new UnidadeRetornoDTO();
+        unidadeRetornoDTO.setId(unidade.getId());
+        unidadeRetornoDTO.setCodigo(unidade.getCodigo());
+        unidadeRetornoDTO.setDescricao(unidade.getDescricao());
+        return unidadeRetornoDTO;
     }
 }

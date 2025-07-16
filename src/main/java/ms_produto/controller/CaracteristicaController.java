@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/caracteristica")
@@ -24,5 +25,10 @@ public class CaracteristicaController {
     @GetMapping
     public List<CaracteristicaRetornoDTO> retornarLista(){
         return servico.retornarListaCaracteristica();
+    }
+
+    @PutMapping("/id/{id}")
+    public CaracteristicaRetornoDTO atualizarCaracteristica(@PathVariable("id") UUID id, @RequestBody @Valid CaracteristicaEntradaDTO caracteristicaEntradaDTO){
+        return servico.atualizarCaracteristica(id, caracteristicaEntradaDTO);
     }
 }

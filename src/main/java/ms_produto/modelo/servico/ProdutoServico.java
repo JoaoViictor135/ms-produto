@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProdutoServico {
@@ -58,5 +59,30 @@ public class ProdutoServico {
             produtoRetornoDTOS.add(produtoRetornoDTO);
         }
         return produtoRetornoDTOS;
+    }
+
+    public ProdutoRetornoDTO atualizaProduto(UUID id, ProdutoEntradaDTO produtoEntradaDTO){
+        Produto produto = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto Não encontrado"));
+        produto.setValorVenda(produtoEntradaDTO.getValorVenda());
+        produto.setFoto(produtoEntradaDTO.getFoto());
+        produto.setComplemento(produtoEntradaDTO.getComplemento());
+        produto.setNomeProduto(produtoEntradaDTO.getNomeProduto());
+        produto.setValorCusto(produtoEntradaDTO.getValorCusto());
+        produto.setCodigoBarra(produtoEntradaDTO.getCodigoBarra());
+        produto.setCodigo(produtoEntradaDTO.getCodigo());
+
+        repositorio.save(produto);
+
+        ProdutoRetornoDTO produtoRetornoDTO = new ProdutoRetornoDTO();
+        produtoRetornoDTO.setId(produto.getId());
+        produtoRetornoDTO.setCodigo(produto.getCodigo());
+        produtoRetornoDTO.setFoto(produto.getFoto());
+        produtoRetornoDTO.setNomeProduto(produto.getNomeProduto());
+        produtoRetornoDTO.setComplemento(produto.getComplemento());
+        produtoRetornoDTO.setCodigoBarra(produto.getCodigoBarra());
+        produtoRetornoDTO.setValorVenda(produto.getValorVenda());
+        produtoRetornoDTO.setValorCusto(produto.getValorCusto());
+
+        return produtoRetornoDTO;
     }
 }

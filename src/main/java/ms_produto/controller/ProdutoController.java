@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/produto")
@@ -23,5 +24,10 @@ public class ProdutoController {
     @GetMapping
     public List<ProdutoRetornoDTO> retornarLista(){
         return servico.retornarListaProduto();
+    }
+
+    @PutMapping("/id/{id}")
+    public ProdutoRetornoDTO atualizarProduto(@PathVariable("id") UUID id, @RequestBody @Valid ProdutoEntradaDTO produtoEntradaDTO){
+        return servico.atualizaProduto(id, produtoEntradaDTO);
     }
 }

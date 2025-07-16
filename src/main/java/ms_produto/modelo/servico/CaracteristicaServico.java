@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CaracteristicaServico {
@@ -41,5 +42,19 @@ public class CaracteristicaServico {
             caracteristicaRetornoDTOS.add(caracteristicaRetornoDTO);
         }
         return caracteristicaRetornoDTOS;
+    }
+
+    public CaracteristicaRetornoDTO atualizarCaracteristica(UUID id, CaracteristicaEntradaDTO caracteristicaEntradaDTO){
+        Caracteristica caracteristica = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
+        caracteristica.setCodigo(caracteristicaEntradaDTO.getCodigo());
+        caracteristica.setDescricao(caracteristicaEntradaDTO.getDescricao());
+
+        repositorio.save(caracteristica);
+
+        CaracteristicaRetornoDTO caracteristicaRetornoDTO = new CaracteristicaRetornoDTO();
+        caracteristicaRetornoDTO.setId(caracteristica.getId());
+        caracteristicaRetornoDTO.setDescricao(caracteristica.getDescricao());
+        caracteristicaRetornoDTO.setCodigo(caracteristica.getCodigo());
+        return caracteristicaRetornoDTO;
     }
 }

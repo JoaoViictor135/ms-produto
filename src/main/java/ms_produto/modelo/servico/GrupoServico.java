@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GrupoServico {
@@ -42,5 +43,19 @@ public class GrupoServico {
             grupoRetornoDTOS.add(grupoRetornoDTO);
         }
         return grupoRetornoDTOS;
+    }
+
+    public GrupoRetornoDTO atualizaGrupo(UUID id, GrupoEntradaDTO grupoEntradaDTO){
+        Grupo grupo = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
+        grupo.setCodigo(grupoEntradaDTO.getCodigo());
+        grupo.setDescricao(grupoEntradaDTO.getDescricao());
+
+        repositorio.save(grupo);
+
+        GrupoRetornoDTO grupoRetornoDTO = new GrupoRetornoDTO();
+        grupoRetornoDTO.setId(grupo.getId());
+        grupoRetornoDTO.setDescricao(grupo.getDescricao());
+        grupoRetornoDTO.setCodigo(grupo.getCodigo());
+        return grupoRetornoDTO;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/grupo")
@@ -25,4 +26,10 @@ public class GrupoController {
     public List<GrupoRetornoDTO> retornarLista() {
         return servico.retornarListaGrupo();
     }
+
+    @PutMapping("/id/{id}")
+    public GrupoRetornoDTO atualizarGrupo(@PathVariable("id") UUID id, @RequestBody @Valid GrupoEntradaDTO grupoEntradaDTO){
+        return servico.atualizaGrupo(id, grupoEntradaDTO);
+    }
+
 }
