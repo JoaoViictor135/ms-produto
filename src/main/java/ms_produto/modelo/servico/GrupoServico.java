@@ -1,6 +1,5 @@
 package ms_produto.modelo.servico;
 
-import ms_produto.dtos.CaracteristicaRetornoDTO;
 import ms_produto.dtos.GrupoEntradaDTO;
 import ms_produto.dtos.GrupoRetornoDTO;
 import ms_produto.modelo.entidades.Grupo;

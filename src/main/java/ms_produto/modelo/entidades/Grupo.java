@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,5 +26,8 @@ public class Grupo {
     private String descricao;
 
     private LocalDateTime dtExclusao;
+
+    @OneToMany(mappedBy = "grupo")
+    private Set<Produto> produtoSet = new HashSet<>();
 
 }

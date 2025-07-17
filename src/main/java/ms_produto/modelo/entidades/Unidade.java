@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -23,4 +25,7 @@ public class Unidade {
     private String descricao;
 
     private LocalDateTime dtExclusao;
+
+    @OneToMany(mappedBy = "unidade")
+    private Set<Produto> produtoSet = new HashSet<>();
 }

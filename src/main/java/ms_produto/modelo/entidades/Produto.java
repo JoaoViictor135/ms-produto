@@ -33,4 +33,16 @@ public class Produto {
     private String foto;
 
     private String codigoBarra;
+
+    @ManyToOne
+    @JoinColumn(name = "id_unidade")
+    private Unidade unidade;
+
+    @ManyToOne
+    @JoinColumn(name = "id_grupo")
+    private Grupo grupo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_caracteristica")
+    private Caracteristica caracteristica;
 }
