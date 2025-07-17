@@ -27,9 +27,40 @@ public class ProdutoServico {
         produto.setCodigoBarra(produtoEntrada.getCodigoBarra());
         produto.setValorCusto(produtoEntrada.getValorCusto());
         produto.setValorVenda(produtoEntrada.getValorVenda());
+        return parseEntidadeParaDTO(produto);
+    }
 
-        produto = repositorio.save(produto);
+    public List<ProdutoRetornoDTO> retornarListaProduto(){
+        List<Produto> listaProduto = repositorio.findAll();
+        List<ProdutoRetornoDTO> produtoRetornoDTOS = new ArrayList<>();
+        for(int i=0;i < listaProduto.size();i++){
+            Produto produto = listaProduto.get(i);
+            produtoRetornoDTOS.add(parseEntidadeParaDTO(produto));
+        }
+        return produtoRetornoDTOS;
+    }
 
+    public ProdutoRetornoDTO atualizaProduto(UUID id, ProdutoEntradaDTO produtoEntradaDTO){
+        Produto produto = retornarProduto(id);
+        produto.setValorVenda(produtoEntradaDTO.getValorVenda());
+        produto.setFoto(produtoEntradaDTO.getFoto());
+        produto.setComplemento(produtoEntradaDTO.getComplemento());
+        produto.setNomeProduto(produtoEntradaDTO.getNomeProduto());
+        produto.setValorCusto(produtoEntradaDTO.getValorCusto());
+        produto.setCodigoBarra(produtoEntradaDTO.getCodigoBarra());
+        produto.setCodigo(produtoEntradaDTO.getCodigo());
+        return parseEntidadeParaDTO(repositorio.save(produto));
+    }
+
+    public void deletarProduto(UUID id){
+        repositorio.delete(retornarProduto(id));
+    }
+
+    public ProdutoRetornoDTO buscarProdutoPorId(UUID id){
+        return parseEntidadeParaDTO(retornarProduto(id));
+    }
+
+    private ProdutoRetornoDTO parseEntidadeParaDTO(Produto produto){
         ProdutoRetornoDTO produtoRetorno = new ProdutoRetornoDTO();
         produtoRetorno.setId(produto.getId());
         produtoRetorno.setNomeProduto(produto.getNomeProduto());
@@ -42,68 +73,7 @@ public class ProdutoServico {
         return produtoRetorno;
     }
 
-    public List<ProdutoRetornoDTO> retornarListaProduto(){
-        List<Produto> listaProduto = repositorio.findAll();
-        List<ProdutoRetornoDTO> produtoRetornoDTOS = new ArrayList<>();
-        for(int i=0;i < listaProduto.size();i++){
-            Produto produto = listaProduto.get(i);
-            ProdutoRetornoDTO produtoRetornoDTO = new ProdutoRetornoDTO();
-            produtoRetornoDTO.setId(produto.getId());
-            produtoRetornoDTO.setFoto(produto.getFoto());
-            produtoRetornoDTO.setComplemento(produto.getComplemento());
-            produtoRetornoDTO.setNomeProduto(produto.getNomeProduto());
-            produtoRetornoDTO.setValorCusto(produto.getValorCusto());
-            produtoRetornoDTO.setValorVenda(produto.getValorVenda());
-            produtoRetornoDTO.setCodigoBarra(produto.getCodigoBarra());
-            produtoRetornoDTO.setCodigo(produto.getCodigo());
-            produtoRetornoDTOS.add(produtoRetornoDTO);
-        }
-        return produtoRetornoDTOS;
-    }
-
-    public ProdutoRetornoDTO atualizaProduto(UUID id, ProdutoEntradaDTO produtoEntradaDTO){
-        Produto produto = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto Não encontrado"));
-        produto.setValorVenda(produtoEntradaDTO.getValorVenda());
-        produto.setFoto(produtoEntradaDTO.getFoto());
-        produto.setComplemento(produtoEntradaDTO.getComplemento());
-        produto.setNomeProduto(produtoEntradaDTO.getNomeProduto());
-        produto.setValorCusto(produtoEntradaDTO.getValorCusto());
-        produto.setCodigoBarra(produtoEntradaDTO.getCodigoBarra());
-        produto.setCodigo(produtoEntradaDTO.getCodigo());
-
-        repositorio.save(produto);
-
-        ProdutoRetornoDTO produtoRetornoDTO = new ProdutoRetornoDTO();
-        produtoRetornoDTO.setId(produto.getId());
-        produtoRetornoDTO.setCodigo(produto.getCodigo());
-        produtoRetornoDTO.setFoto(produto.getFoto());
-        produtoRetornoDTO.setNomeProduto(produto.getNomeProduto());
-        produtoRetornoDTO.setComplemento(produto.getComplemento());
-        produtoRetornoDTO.setCodigoBarra(produto.getCodigoBarra());
-        produtoRetornoDTO.setValorVenda(produto.getValorVenda());
-        produtoRetornoDTO.setValorCusto(produto.getValorCusto());
-
-        return produtoRetornoDTO;
-    }
-
-    public void deletarProduto(UUID id){
-        Produto produto = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-        repositorio.delete(produto);
-    }
-
-    public ProdutoRetornoDTO buscarProdutoPorId(UUID id){
-        Produto produto = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-
-        ProdutoRetornoDTO produtoRetornoDTO = new ProdutoRetornoDTO();
-        produtoRetornoDTO.setId(produto.getId());
-        produtoRetornoDTO.setCodigo(produto.getCodigo());
-        produtoRetornoDTO.setFoto(produto.getFoto());
-        produtoRetornoDTO.setNomeProduto(produto.getNomeProduto());
-        produtoRetornoDTO.setComplemento(produto.getComplemento());
-        produtoRetornoDTO.setCodigoBarra(produto.getCodigoBarra());
-        produtoRetornoDTO.setValorVenda(produto.getValorVenda());
-        produtoRetornoDTO.setValorCusto(produto.getValorCusto());
-
-        return produtoRetornoDTO;
+    private Produto retornarProduto(UUID id){
+        return repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 }

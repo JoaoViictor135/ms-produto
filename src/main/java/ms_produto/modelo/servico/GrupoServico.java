@@ -21,14 +21,7 @@ public class GrupoServico {
         Grupo grupo = new Grupo();
         grupo.setDescricao(grupoEntrada.getDescricao());
         grupo.setCodigo(grupoEntrada.getCodigo());
-
-        grupo = repositorio.save(grupo);
-
-        GrupoRetornoDTO grupoRetorno = new GrupoRetornoDTO();
-        grupoRetorno.setId(grupo.getId());
-        grupoRetorno.setDescricao(grupo.getDescricao());
-        grupoRetorno.setCodigo(grupo.getCodigo());
-        return grupoRetorno;
+        return parseEntidadeParaDTO(repositorio.save(grupo));
     }
 
     public List<GrupoRetornoDTO> retornarListaGrupo(){
@@ -36,41 +29,35 @@ public class GrupoServico {
         List<GrupoRetornoDTO> grupoRetornoDTOS = new ArrayList<>();
         for(int i=0;i < listaGrupo.size();i++){
             Grupo grupo = listaGrupo.get(i);
-            GrupoRetornoDTO grupoRetornoDTO = new GrupoRetornoDTO();
-            grupoRetornoDTO.setId(grupo.getId());
-            grupoRetornoDTO.setCodigo(grupo.getCodigo());
-            grupoRetornoDTO.setDescricao(grupo.getDescricao());
-            grupoRetornoDTOS.add(grupoRetornoDTO);
+            grupoRetornoDTOS.add(parseEntidadeParaDTO(grupo));
         }
         return grupoRetornoDTOS;
     }
 
     public GrupoRetornoDTO atualizaGrupo(UUID id, GrupoEntradaDTO grupoEntradaDTO){
-        Grupo grupo = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
+        Grupo grupo = retornarGrupo(id);
         grupo.setCodigo(grupoEntradaDTO.getCodigo());
         grupo.setDescricao(grupoEntradaDTO.getDescricao());
-
-        repositorio.save(grupo);
-
-        GrupoRetornoDTO grupoRetornoDTO = new GrupoRetornoDTO();
-        grupoRetornoDTO.setId(grupo.getId());
-        grupoRetornoDTO.setDescricao(grupo.getDescricao());
-        grupoRetornoDTO.setCodigo(grupo.getCodigo());
-        return grupoRetornoDTO;
+        return parseEntidadeParaDTO(repositorio.save(grupo));
     }
 
     public void deletarGrupo(UUID id){
-        Grupo grupo = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
-        repositorio.delete(grupo);
+        repositorio.delete(retornarGrupo(id));
     }
 
     public GrupoRetornoDTO buscarGrupoPorId(UUID id){
-        Grupo grupo = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
+        return parseEntidadeParaDTO(retornarGrupo(id));
+    }
 
-        GrupoRetornoDTO grupoRetornoDTO = new GrupoRetornoDTO();
-        grupoRetornoDTO.setId(grupo.getId());
-        grupoRetornoDTO.setDescricao(grupo.getDescricao());
-        grupoRetornoDTO.setCodigo(grupo.getCodigo());
-        return grupoRetornoDTO;
+    private GrupoRetornoDTO parseEntidadeParaDTO(Grupo grupo){
+        GrupoRetornoDTO grupoRetorno = new GrupoRetornoDTO();
+        grupoRetorno.setId(grupo.getId());
+        grupoRetorno.setDescricao(grupo.getDescricao());
+        grupoRetorno.setCodigo(grupo.getCodigo());
+        return grupoRetorno;
+    }
+
+    private Grupo retornarGrupo(UUID id){
+        return repositorio.findById(id).orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
     }
 }

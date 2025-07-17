@@ -20,14 +20,7 @@ public class CaracteristicaServico {
         Caracteristica caracteristica = new Caracteristica();
         caracteristica.setCodigo(caracteristicaEntrada.getCodigo());
         caracteristica.setDescricao(caracteristicaEntrada.getDescricao());
-
-        caracteristica = repositorio.save(caracteristica);
-
-        CaracteristicaRetornoDTO caracteristicaRetorno = new CaracteristicaRetornoDTO();
-        caracteristicaRetorno.setId(caracteristica.getId());
-        caracteristicaRetorno.setDescricao(caracteristica.getDescricao());
-        caracteristicaRetorno.setCodigo(caracteristica.getCodigo());
-        return caracteristicaRetorno;
+        return parseEntidadeParaDTO(caracteristica);
     }
 
     public List<CaracteristicaRetornoDTO> retornarListaCaracteristica(){
@@ -35,41 +28,35 @@ public class CaracteristicaServico {
         List<CaracteristicaRetornoDTO> caracteristicaRetornoDTOS = new ArrayList<>();
         for (int i=0;i < listaCaracteristica.size();i++){
             Caracteristica caracteristica = listaCaracteristica.get(i);
-            CaracteristicaRetornoDTO caracteristicaRetornoDTO = new CaracteristicaRetornoDTO();
-            caracteristicaRetornoDTO.setId(caracteristica.getId());
-            caracteristicaRetornoDTO.setCodigo(caracteristica.getCodigo());
-            caracteristicaRetornoDTO.setDescricao(caracteristica.getDescricao());
-            caracteristicaRetornoDTOS.add(caracteristicaRetornoDTO);
+            caracteristicaRetornoDTOS.add(parseEntidadeParaDTO(caracteristica));
         }
         return caracteristicaRetornoDTOS;
     }
 
     public CaracteristicaRetornoDTO atualizarCaracteristica(UUID id, CaracteristicaEntradaDTO caracteristicaEntradaDTO){
-        Caracteristica caracteristica = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
+        Caracteristica caracteristica = retornarCaracteristica(id);
         caracteristica.setCodigo(caracteristicaEntradaDTO.getCodigo());
         caracteristica.setDescricao(caracteristicaEntradaDTO.getDescricao());
-
-        repositorio.save(caracteristica);
-
-        CaracteristicaRetornoDTO caracteristicaRetornoDTO = new CaracteristicaRetornoDTO();
-        caracteristicaRetornoDTO.setId(caracteristica.getId());
-        caracteristicaRetornoDTO.setDescricao(caracteristica.getDescricao());
-        caracteristicaRetornoDTO.setCodigo(caracteristica.getCodigo());
-        return caracteristicaRetornoDTO;
+        return parseEntidadeParaDTO(caracteristica);
     }
 
     public void deletarCaracteristica(UUID id){
-        Caracteristica caracteristica = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
-        repositorio.delete(caracteristica);
+        repositorio.delete(retornarCaracteristica(id));
     }
 
     public CaracteristicaRetornoDTO buscarCaracteristicaPorId(UUID id){
-        Caracteristica caracteristica = repositorio.findById(id).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
+        return parseEntidadeParaDTO(retornarCaracteristica(id));
+    }
 
-        CaracteristicaRetornoDTO caracteristicaRetornoDTO = new CaracteristicaRetornoDTO();
-        caracteristicaRetornoDTO.setId(caracteristica.getId());
-        caracteristicaRetornoDTO.setDescricao(caracteristica.getDescricao());
-        caracteristicaRetornoDTO.setCodigo(caracteristica.getCodigo());
-        return caracteristicaRetornoDTO;
+    private CaracteristicaRetornoDTO parseEntidadeParaDTO(Caracteristica caracteristica){
+        CaracteristicaRetornoDTO caracteristicaRetorno = new CaracteristicaRetornoDTO();
+        caracteristicaRetorno.setId(caracteristica.getId());
+        caracteristicaRetorno.setDescricao(caracteristica.getDescricao());
+        caracteristicaRetorno.setCodigo(caracteristica.getCodigo());
+        return caracteristicaRetorno;
+    }
+
+    private Caracteristica retornarCaracteristica(UUID id){
+        return repositorio.findById(id).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
     }
 }
