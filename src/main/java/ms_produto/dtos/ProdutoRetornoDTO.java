@@ -27,4 +27,10 @@ public class ProdutoRetornoDTO {
     private String foto;
 
     private String codigoBarra;
+
+    private CaracteristicaRetornoDTO caracteristica;
+
+    private UnidadeRetornoDTO unidade;
+
+    private GrupoRetornoDTO grupo;
 }

@@ -2,6 +2,7 @@ package ms_produto.modelo.servico;
 
 import ms_produto.dtos.GrupoEntradaDTO;
 import ms_produto.dtos.GrupoRetornoDTO;
+import ms_produto.modelo.entidades.Caracteristica;
 import ms_produto.modelo.entidades.Grupo;
 import ms_produto.modelo.repositorio.GrupoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,11 @@ public class GrupoServico {
         return parseEntidadeParaDTO(retornarGrupo(id));
     }
 
-    private GrupoRetornoDTO parseEntidadeParaDTO(Grupo grupo){
+    public Grupo buscarGrupoPorCodigo(String codigo){
+        return repositorio.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
+    }
+
+    public GrupoRetornoDTO parseEntidadeParaDTO(Grupo grupo){
         GrupoRetornoDTO grupoRetorno = new GrupoRetornoDTO();
         grupoRetorno.setId(grupo.getId());
         grupoRetorno.setDescricao(grupo.getDescricao());

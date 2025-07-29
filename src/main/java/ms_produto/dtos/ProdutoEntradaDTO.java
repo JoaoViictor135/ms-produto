@@ -26,4 +26,10 @@ public class ProdutoEntradaDTO {
     private String foto;
 
     private String codigoBarra;
+
+    private CaracteristicaEntradaDTO caracteristica;
+
+    private UnidadeEntradaDTO unidade;
+
+    private GrupoEntradaDTO grupo;
 }

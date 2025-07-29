@@ -48,7 +48,11 @@ public class CaracteristicaServico {
         return parseEntidadeParaDTO(retornarCaracteristica(id));
     }
 
-    private CaracteristicaRetornoDTO parseEntidadeParaDTO(Caracteristica caracteristica){
+    public Caracteristica buscarCaracteristicaPorCodigo(String codigo){
+        return repositorio.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Caracteristica não encontrada"));
+    }
+
+    public CaracteristicaRetornoDTO parseEntidadeParaDTO(Caracteristica caracteristica){
         CaracteristicaRetornoDTO caracteristicaRetorno = new CaracteristicaRetornoDTO();
         caracteristicaRetorno.setId(caracteristica.getId());
         caracteristicaRetorno.setDescricao(caracteristica.getDescricao());

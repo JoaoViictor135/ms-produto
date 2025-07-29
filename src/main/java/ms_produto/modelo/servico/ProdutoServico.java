@@ -1,8 +1,12 @@
 package ms_produto.modelo.servico;
 
+import ms_produto.dtos.CaracteristicaRetornoDTO;
 import ms_produto.dtos.ProdutoEntradaDTO;
 import ms_produto.dtos.ProdutoRetornoDTO;
+import ms_produto.modelo.entidades.Caracteristica;
+import ms_produto.modelo.entidades.Grupo;
 import ms_produto.modelo.entidades.Produto;
+import ms_produto.modelo.entidades.Unidade;
 import ms_produto.modelo.repositorio.ProdutoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,18 +18,22 @@ import java.util.UUID;
 @Service
 public class ProdutoServico {
 
-    @Autowired ProdutoRepositorio repositorio;
+    @Autowired private ProdutoRepositorio repositorio;
+    @Autowired private CaracteristicaServico caracteristicaServico;
+    @Autowired private GrupoServico grupoServico;
+    @Autowired private UnidadeServico unidadeServico;
 
     public ProdutoRetornoDTO criarProduto(ProdutoEntradaDTO produtoEntrada){
-        Produto produto = new Produto();
-        produto.setNomeProduto(produtoEntrada.getNomeProduto());
-        produto.setCodigo(produtoEntrada.getCodigo());
-        produto.setFoto(produtoEntrada.getFoto());
-        produto.setComplemento(produtoEntrada.getComplemento());
-        produto.setCodigoBarra(produtoEntrada.getCodigoBarra());
-        produto.setValorCusto(produtoEntrada.getValorCusto());
-        produto.setValorVenda(produtoEntrada.getValorVenda());
-        return parseEntidadeParaDTO(produto);
+        Caracteristica caracteristica = caracteristicaServico.buscarCaracteristicaPorCodigo(produtoEntrada.getCaracteristica().getCodigo());
+        Grupo grupo = grupoServico.buscarGrupoPorCodigo(produtoEntrada.getGrupo().getCodigo());
+        Unidade unidade = unidadeServico.buscarUnidadePorCodigo(produtoEntrada.getUnidade().getCodigo());
+
+        Produto produto = repositorio.save(preencherProduto(caracteristica, unidade, grupo, produtoEntrada));
+        ProdutoRetornoDTO produtoRetornoDTO = parseEntidadeParaDTO(produto);
+        produtoRetornoDTO.setCaracteristica(caracteristicaServico.parseEntidadeParaDTO(caracteristica));
+        produtoRetornoDTO.setGrupo(grupoServico.parseEntidadeParaDTO(grupo));
+        produtoRetornoDTO.setUnidade(unidadeServico.parseEntidadeParaDTO(unidade));
+        return produtoRetornoDTO;
     }
 
     public List<ProdutoRetornoDTO> retornarListaProduto(){
@@ -73,5 +81,20 @@ public class ProdutoServico {
 
     private Produto retornarProduto(UUID id){
         return repositorio.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+    }
+
+    private Produto preencherProduto(Caracteristica caracteristica, Unidade unidade, Grupo grupo, ProdutoEntradaDTO produtoEntradaDTO){
+        Produto produto = new Produto();
+        produto.setNomeProduto(produtoEntradaDTO.getNomeProduto());
+        produto.setCodigo(produtoEntradaDTO.getCodigo());
+        produto.setFoto(produtoEntradaDTO.getFoto());
+        produto.setComplemento(produtoEntradaDTO.getComplemento());
+        produto.setCodigoBarra(produtoEntradaDTO.getCodigoBarra());
+        produto.setValorCusto(produtoEntradaDTO.getValorCusto());
+        produto.setValorVenda(produtoEntradaDTO.getValorVenda());
+        produto.setCaracteristica(caracteristica);
+        produto.setUnidade(unidade);
+        produto.setGrupo(grupo);
+        return produto;
     }
 }

@@ -48,7 +48,11 @@ public class UnidadeServico {
         return parseEntidadeParaDTO(retornarUnidade(id));
     }
 
-    private UnidadeRetornoDTO parseEntidadeParaDTO(Unidade unidade){
+    public Unidade buscarUnidadePorCodigo(String codigo){
+        return repositorio.findByCodigo(codigo).orElseThrow(() -> new RuntimeException("Grupo não encontrado"));
+    }
+
+    public UnidadeRetornoDTO parseEntidadeParaDTO(Unidade unidade){
         UnidadeRetornoDTO unidadeRetornoDTO = new UnidadeRetornoDTO();
         unidadeRetornoDTO.setId(unidade.getId());
         unidadeRetornoDTO.setCodigo(unidade.getCodigo());
