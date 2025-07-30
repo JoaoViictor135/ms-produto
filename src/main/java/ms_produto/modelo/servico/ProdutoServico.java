@@ -24,15 +24,29 @@ public class ProdutoServico {
     @Autowired private UnidadeServico unidadeServico;
 
     public ProdutoRetornoDTO criarProduto(ProdutoEntradaDTO produtoEntrada){
-        Caracteristica caracteristica = caracteristicaServico.buscarCaracteristicaPorCodigo(produtoEntrada.getCaracteristica().getCodigo());
-        Grupo grupo = grupoServico.buscarGrupoPorCodigo(produtoEntrada.getGrupo().getCodigo());
-        Unidade unidade = unidadeServico.buscarUnidadePorCodigo(produtoEntrada.getUnidade().getCodigo());
-
+        Caracteristica caracteristica = null;
+        if(produtoEntrada.getCaracteristica() != null && produtoEntrada.getCaracteristica().getCodigo() != "") {
+            caracteristica = caracteristicaServico.buscarCaracteristicaPorCodigo(produtoEntrada.getCaracteristica().getCodigo());
+        }
+        Grupo grupo = null;
+        if(produtoEntrada.getGrupo() != null && produtoEntrada.getGrupo().getCodigo() != "") {
+            grupo = grupoServico.buscarGrupoPorCodigo(produtoEntrada.getGrupo().getCodigo());
+        }
+        Unidade unidade = null;
+        if(produtoEntrada.getUnidade() != null && produtoEntrada.getUnidade().getCodigo() != "") {
+            unidade = unidadeServico.buscarUnidadePorCodigo(produtoEntrada.getUnidade().getCodigo());
+        }
         Produto produto = repositorio.save(preencherProduto(caracteristica, unidade, grupo, produtoEntrada));
         ProdutoRetornoDTO produtoRetornoDTO = parseEntidadeParaDTO(produto);
-        produtoRetornoDTO.setCaracteristica(caracteristicaServico.parseEntidadeParaDTO(caracteristica));
-        produtoRetornoDTO.setGrupo(grupoServico.parseEntidadeParaDTO(grupo));
-        produtoRetornoDTO.setUnidade(unidadeServico.parseEntidadeParaDTO(unidade));
+        if(caracteristica != null) {
+            produtoRetornoDTO.setCaracteristica(caracteristicaServico.parseEntidadeParaDTO(caracteristica));
+        }
+        if (grupo != null) {
+            produtoRetornoDTO.setGrupo(grupoServico.parseEntidadeParaDTO(grupo));
+        }
+        if(unidade != null) {
+            produtoRetornoDTO.setUnidade(unidadeServico.parseEntidadeParaDTO(unidade));
+        }
         return produtoRetornoDTO;
     }
 
